@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 from flask_cors import CORS
 import random
 
@@ -101,7 +102,8 @@ def create_app(test_config=None):
         abort(404)
     question.delete()
     return jsonify({
-            'success': True
+            'success': True,
+            'id': id
             })
   '''
   @TODO: 
@@ -203,13 +205,13 @@ def create_app(test_config=None):
     olds= req['previous_questions']
     query = Question.query
     if (cid == 0):
-        selection = query.filter(Question.id.not_in(olds)).all()
+        selection = query.filter(~Question.id.in_(olds)).order_by(func.random()).first()
     else : 
-        selection = query.filter(Question.category == cid).filter(Question.id.not_in(olds)).all()
+        selection = query.filter(Question.category == cid).filter(~Question.id.in_(olds)).order_by(func.random()).first()
 
-    if len(selection) > 0:
+    if selection != None:
         return jsonify({
-            'question': selection[0].format()
+            'question': selection.format()
             })
     else:
         return jsonify({
