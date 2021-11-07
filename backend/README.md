@@ -99,7 +99,136 @@ GET '/api/v1.0/categories'
 '6' : "Sports"}
 
 ```
+```js
+GET '/categories'
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Request Arguments: None
+- Returns: An object with a single key, categories, that contains an object of id: category_string key:value pairs. 
+{
+    'categories': { '1' : "Science",
+    '2' : "Art",
+    '3' : "Geography",
+    '4' : "History",
+    '5' : "Entertainment",
+    '6' : "Sports" }
+}
+```
 
+
+```js
+GET '/questions?page=${integer}'
+- Fetches a paginated set of questions, a total number of questions, all categories and current category string. 
+- Request Arguments: page - integer
+- Returns: An object with 10 paginated questions, total questions, object including all categories, and current category string
+{
+    'questions': [
+        {
+            'id': 1,
+            'question': 'This is a question',
+            'answer': 'This is an answer', 
+            'difficulty': 5,
+            'category': 2
+        },
+    ],
+    'totalQuestions': 100,
+    'categories': { '1' : "Science",
+    '2' : "Art",
+    '3' : "Geography",
+    '4' : "History",
+    '5' : "Entertainment",
+    '6' : "Sports" },
+    'currentCategory': 'History'
+}
+```
+
+```js
+GET '/categories/${id}/questions'
+- Fetches questions for a cateogry specified by id request argument 
+- Request Arguments: id - integer
+- Returns: An object with questions for the specified category, total questions, and current category string 
+{
+    'questions': [
+        {
+            'id': 1,
+            'question': 'This is a question',
+            'answer': 'This is an answer', 
+            'difficulty': 5,
+            'category': 4
+        },
+    ],
+    'totalQuestions': 100,
+    'currentCategory': 'History'
+}
+```
+
+```js
+DELETE '/questions/${id}'
+- Deletes a specified question using the id of the question
+- Request Arguments: id - integer
+- Returns: An object shows the delete success of failure with the question id 
+{
+	'success': True,
+    'id': 2
+}
+```
+
+```js
+POST '/quizzes'
+- Sends a post request in order to get the next question 
+- Request Body: 
+{'previous_questions':  an array of question id's such as [1, 4, 20, 15]
+'quiz_category': a string of the current category }
+- Returns: a single new question object 
+{
+    'question': {
+        'id': 1,
+        'question': 'This is a question',
+        'answer': 'This is an answer', 
+        'difficulty': 5,
+        'category': 4
+    }
+}
+```
+
+```js
+POST '/questions'
+- Sends a post request in order to add a new question
+- Request Body: 
+{
+    'question':  'Heres a new question string',
+    'answer':  'Heres a new answer string',
+    'difficulty': 1,
+    'category': 3,
+}
+- Returns: an object shows success or failure. the new questions id is also returned.
+{
+	'success': True,
+    'id': 2
+}
+```
+
+```js
+POST '/questions/search'
+- Sends a post request in order to search for a specific question by search term 
+- Request Body: 
+{
+    'searchTerm': 'this is the term the user is looking for'
+}
+- Returns: any array of questions, a number of totalQuestions that met the search term and the current category string 
+{
+    'questions': [
+        {
+            'id': 1,
+            'question': 'This is a question',
+            'answer': 'This is an answer', 
+            'difficulty': 5,
+            'category': 5
+        },
+    ],
+    'totalQuestions': 100,
+    'currentCategory': 'Entertainment'
+}
+```
 
 ## Testing
 To run the tests, run
